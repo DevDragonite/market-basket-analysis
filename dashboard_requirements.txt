@@ -1,0 +1,6 @@
+streamlit
+pandas
+plotly
+networkx
+streamlit-agraph
+numpy
