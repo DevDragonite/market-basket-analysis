@@ -263,13 +263,21 @@ lang_code = lang_option.split("(")[1].split(")")[0] # ES, EN, PT
 t = translations[lang_code]
 
 # Navegación con Persistencia
-# Usamos radio pero guardamos el estado manualmente si es necesario, 
-# aunque st.radio mantiene su estado por defecto si la key es constante.
+if 'nav_selection' not in st.session_state:
+    st.session_state['nav_selection'] = "🏠 Home"
+
+def set_nav_home():
+    st.session_state['nav_selection'] = "🏠 Home"
+
+def set_nav_dashboard():
+    st.session_state['nav_selection'] = "📊 Dashboard"
+
 app_mode = st.sidebar.radio(
     "Navegación", 
     ["🏠 Home", "📊 Dashboard"],
-    index=0 if "Home" in st.session_state.get("nav_selection", "Home") else 1,
-    key="nav_selection"
+    index=0 if "Home" in st.session_state['nav_selection'] else 1,
+    key="_nav_radio",  # Clave interna diferente a la de la sesión para evitar el error
+    on_change=lambda: st.session_state.update(nav_selection=st.session_state._nav_radio)
 )
 
 # ─── Vistas ──────────────────────────────────────────────────────────────────
@@ -290,10 +298,8 @@ def show_home():
         {t['methodology_text']}
         """)
         
-        # Botón que cambia la navegación
-        if st.button(t['cta_button'], type="primary"):
-            st.session_state.nav_selection = "📊 Dashboard"
-            st.rerun()
+        # Botón que cambia la navegación usando callback
+        st.button(t['cta_button'], type="primary", on_click=set_nav_dashboard)
 
     with col2:
         # Placeholder para imagen ilustrativa
