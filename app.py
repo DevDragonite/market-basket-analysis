@@ -1,4 +1,3 @@
-import streamlit as pd
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -398,7 +397,7 @@ def show_dashboard():
             st.markdown(f"### {t['sim_title']}")
             all_antecedents_simple = sorted(list(set([x.split(',')[0].strip(" {'}") for x in rules['antecedent']])))
             
-            selected = st.selectbox("", all_antecedents_simple)
+            selected = st.selectbox("Selecciona producto", all_antecedents_simple, label_visibility="collapsed")
             
         with c2:
             st.markdown(f"### {t['sim_rec'].format(selected)}")
